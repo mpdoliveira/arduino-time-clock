@@ -2,19 +2,18 @@
 #include <Keypad.h>
 #include <LiquidCrystal.h>
 
-#define MAXIN 10
+#define MAXIN 11
 
 #define ROWS 4
 #define COLS 4
 
 #define RS_PIN 31
 #define E_PIN 30
-#define D4_PIN 7
-#define D5_PIN 6
-#define D6_PIN 5
-#define D7_PIN 4
+#define D4_PIN 34
+#define D5_PIN 35
+#define D6_PIN 32
+#define D7_PIN 33
 #define VO_PIN 2
-#define BLA_PIN 3
 
 
 LiquidCrystal lcd(
@@ -47,19 +46,36 @@ Keypad keypad = Keypad(
 char inputWord[MAXIN + 1] = "";
 byte currIndex = 0;
 
+void defaultLCD() {
+  lcd.noBlink();
+  lcd.clear();
+  lcd.print("hh:mm");
+}
+
 void setup() {
   Serial.begin(9600);
+  inputWord[0] = '\0';
   pinMode(VO_PIN, OUTPUT);
-  pinMode(BLA_PIN, OUTPUT);
   analogWrite(VO_PIN, 60);
-  analogWrite(BLA_PIN, 60);
   lcd.begin(16, 2);
-  lcd.print("Trabalha,Karina!");
+  defaultLCD();
+}
+
+void setTitle(const char* title) {
+  lcd.setCursor(0, 0);
+  lcd.print(title);
+  lcd.setCursor(0, 1);
+  lcd.blink();
 }
 
 void resetWord() {
   currIndex = 0;
   inputWord[0] = '\0';
+}
+
+void eraseWord() {
+  lcd.setCursor(0, 1);
+  lcd.print("               ");
 }
 
 void deleteKey() {
@@ -69,7 +85,16 @@ void deleteKey() {
   }
 }
 
+void eraseKey() {
+  lcd.setCursor(currIndex, 1);
+  lcd.print(' ');
+  lcd.setCursor(currIndex, 1);
+}
+
 void addKey(char key) {
+  if (currIndex == 0) {
+    setTitle("NUM MATRICULA:");
+  }
   if (currIndex < MAXIN) {
     inputWord[currIndex] = key;
     currIndex++;
@@ -77,47 +102,34 @@ void addKey(char key) {
   }
 }
 
-byte vo_light = 60;
-byte bla_light = 60;
-
-void light_set(byte pin, byte value) {
-  if (pin == VO_PIN) {
-    vo_light += value;
-    analogWrite(VO_PIN, vo_light / 4);
-  }
-  else if (pin == BLA_PIN) {
-    bla_light += value;
-    analogWrite(BLA_PIN, bla_light / 4);
-  }
+void printKey(char key) {
+  lcd.setCursor(currIndex - 1, 1);
+  lcd.print(key);
 }
+
 
 void loop() {
   char key = keypad.getKey();
 
   if (key) {
+
     switch (key) {
       case '*':
         deleteKey();
+        eraseKey();
         break;
       case '#':
         resetWord();
-        break;
-      case 'A':
-        light_set(VO_PIN, 10);
-        break;
-      case 'B':
-        light_set(VO_PIN, -10);
-        break;
-      case 'C':
-        light_set(BLA_PIN, 10);
+        eraseWord();
         break;
       case 'D':
-        light_set(BLA_PIN, -10);
+        resetWord();
+        eraseWord();
+        break;
+      default:
+        addKey(key);
+        printKey(key);
         break;
     }
   }
-  else if (key) {
-    addKey(key);
-  }
-  
 }
