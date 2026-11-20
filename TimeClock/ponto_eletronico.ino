@@ -69,15 +69,6 @@ void setTitle(const char* title) {
   lcd.blink();
 }
 
-void resetWord() {
-  currIndex = 0;
-  inputWord[0] = '\0';
-}
-
-void eraseWord() {
-  lcd.setCursor(0, 1);
-  lcd.print("               ");
-}
 
 void deleteKey() {
   if (currIndex > 0) {
@@ -108,7 +99,7 @@ void printKey(char key) {
   lcd.print(key);
 }
 
-// Mode managing
+// MODE MANAGING
 
 // 0 : Operational
 // 1 : Admin auth
@@ -134,8 +125,12 @@ void mode() {
   }
 }
 
-void cancel() {
 
+
+void cancel() {
+  currIndex = 0;
+  inputWord = "";
+  defaultPage();
 }
 
 void backspace() {
