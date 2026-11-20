@@ -56,6 +56,15 @@ void defaultPage() {
   lcd.print("hh:mm");
 }
 
+void titlePage(const char* title) {
+  if (title.length() <= MAX_REGISTRATION) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(title);
+    lcd.setCursor(0, 1);
+  }
+}
+
 void adminPage() {
   lcd.noBlink();
   lcd.clear();
@@ -82,40 +91,12 @@ void setTitle(const char* title) {
 }
 
 
-void deleteKey() {
-  if (nextIndex > 0) {
-    nextIndex--;
-   inputDigits[nextIndex] = '\0';
-  }
-}
-
-void eraseKey() {
-  lcd.setCursor(nextIndex, 1);
-  lcd.print(' ');
-  lcd.setCursor(nextIndex, 1);
-}
-
-void addKey(char key) {
-  if (nextIndex == 0) {
-    setTitle("NUM MATRICULA:");
-  }
-  if (nextIndex < MAX;IN) {
-    inputDigits[nextIndex] = key;
-    nextIndex++;
-    inputDigits[nextIndex] = '\0';
-  }
-}
-
-void printKey(char key) {
-  lcd.setCursor(nextIndex - 1, 1);
-  lcd.print(key);
-}
-
 // MODE MANAGING
 
 // 0 : Operational
 // 1 : Admin auth
 // 2 : Admin
+// 3 : Set clock
 
 byte mode = 0;
 
@@ -126,13 +107,10 @@ void mode() {
     mode = 1;
     titlePage("ADMIN PASSWORD");
     break;
-  case 1:
-    mode = 0;
-    defaultPage();
-  case 2:
-    mode = 0;
-    defaultPage();
+    
   default:
+    mode = 0;
+    defaultPage();
     break;
   }
 }
