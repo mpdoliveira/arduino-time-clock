@@ -246,10 +246,14 @@ void setup() {
 
 // MAIN LOOP
 
+//time management
+unsigned long lastMillis = millis();
+
 void loop() {
   char key = keypad.getKey();
 
   if (key) {
+    lastMillis = millis();
 
     switch (key) {
       case 'A':
@@ -274,5 +278,8 @@ void loop() {
         digit();
         break;
     }
+  }
+  else if (millis() - lastMillis < 120000) {
+    defaultPage();
   }
 }
