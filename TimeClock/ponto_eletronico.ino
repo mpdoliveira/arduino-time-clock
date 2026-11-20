@@ -2,12 +2,15 @@
 #include <Keypad.h>
 #include <LiquidCrystal.h>
 
+// Input lenght control
 #define MAX_PASSWORD 16
 #define MAX_REGISTRATION 10
 
+// Keypad pins
 #define ROWS 4
 #define COLS 4
 
+// LCD display pins
 #define RS_PIN 31
 #define E_PIN 30
 #define D4_PIN 34
@@ -17,15 +20,9 @@
 #define VO_PIN 2
 
 
-LiquidCrystal lcd(
-  RS_PIN,
-  E_PIN,
-  D4_PIN,
-  D5_PIN,
-  D6_PIN,
-  D7_PIN
-);
+// HARDWARE CONFIGURATION
 
+// Keypad configuration
 char hexaKeys[ROWS][COLS] = {
   {'1','2','3','A'},
   {'4','5','6','B'},
@@ -44,8 +41,16 @@ Keypad keypad = Keypad(
   COLS
 );
 
-char inputDigits[MAXIN + 1] = "";
-byte nextIndex = 0;
+// LCD display configuration
+LiquidCrystal lcd(
+  RS_PIN,
+  E_PIN,
+  D4_PIN,
+  D5_PIN,
+  D6_PIN,
+  D7_PIN
+);
+
 
 
 // PAGES
@@ -74,24 +79,8 @@ void adminPage() {
   lcd.print("3.+reg  4.-reg ");
 }
 
-void setup() {
-  Serial.begin(9600;);
-  inputDigits[0] = '\0';
-  pinMode(VO_PIN, OUTPUT);
-  analogWrite(VO_PIN, 60);
-  lcd.begin(16, 2);
-  defaultLCD();
-}
 
-void setTitle(const char* title) {
-  lcd.setCursor(0, 0);
-  lcd.print(title);
-  lcd.setCursor(0, 1);
-  lcd.blink();
-}
-
-
-// MODE MANAGING
+// CONFIG FUNCTIONS
 
 // 0 : Operational
 // 1 : Admin auth
@@ -99,7 +88,6 @@ void setTitle(const char* title) {
 // 3 : Set clock
 
 byte mode = 0;
-
 void mode() {
   switch (mode)
   {
@@ -122,6 +110,12 @@ void tutors() {
 void language() {
 
 }
+
+
+// INPUT FUNCTIONS 
+
+char inputDigits[MAXIN + 1] = "";
+byte nextIndex = 0;
 
 void cancel() {
   nextIndex = 0;
@@ -236,6 +230,21 @@ void digit(const byte digit) {
     break;
   }
 }
+
+// SETUP
+
+void setup() {
+  Serial.begin(9600;);
+  
+  // TODO REMOVE VO_PIN AND USE 2k resistor instead
+  pinMode(VO_PIN, OUTPUT);
+  analogWrite(VO_PIN, 60);
+
+  lcd.begin(16, 2);
+  defaultPage();
+}
+
+// MAIN LOOP
 
 void loop() {
   char key = keypad.getKey();
