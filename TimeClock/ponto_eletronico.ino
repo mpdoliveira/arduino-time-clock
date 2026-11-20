@@ -203,9 +203,38 @@ void digit(const byte digit) {
   {
   case 0:
     if (nextIndex <= MAX_REGISTRATION) {
-      input
+      if (nextIndex == 0) {
+        titlePage("REGISTRATION:");
+      }
+
+      //internal managing
+      inputDigits[nextIndex] = digit;
+      nextIndex++;
+      inputDigits[nextIndex] = '\0';
+
+      //lcd managing
+      lcd.print(digit);
     }
     break;
+
+  case 1:
+    if (nextIndex <= MAX_PASSWORD) {
+      if (nextIndex == 0) {
+        titlePage("PASSWORD:");
+      }
+
+      //internal managing
+      inputDigits[nextIndex] = digit;
+      nextIndex++;
+      inputDigits[nextIndex] = '\0';
+
+      //lcd managing
+      lcd.print('*');
+    }
+    break;
+
+  case 2:
+    // TO DO
   
   default:
     break;
