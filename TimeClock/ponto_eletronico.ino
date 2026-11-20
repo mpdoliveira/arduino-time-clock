@@ -107,6 +107,25 @@ void printKey(char key) {
   lcd.print(key);
 }
 
+void mode() {
+
+}
+
+void cancel() {
+
+}
+
+void backspace() {
+
+}
+
+void confirm() {
+
+}
+
+void digit(const byte digit) {
+
+}
 
 void loop() {
   char key = keypad.getKey();
@@ -114,21 +133,26 @@ void loop() {
   if (key) {
 
     switch (key) {
-      case '*':
-        deleteKey();
-        eraseKey();
+      case 'A':
+        mode();
         break;
-      case '#':
-        resetWord();
-        eraseWord();
+      case 'B':
+        //functionless
+        break;
+      case 'C':
+        //functionless
         break;
       case 'D':
-        resetWord();
-        eraseWord();
+        cancel();
+        break;
+      case '*':
+        backspace();
+        break;
+      case '#':
+        confirm();
         break;
       default:
-        addKey(key);
-        printKey(key);
+        digit();
         break;
     }
   }
