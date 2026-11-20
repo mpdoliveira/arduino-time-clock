@@ -47,10 +47,22 @@ Keypad keypad = Keypad(
 char inputDigits[MAXIN + 1] = "";
 byte nextIndex = 0;
 
-void defaultLCD() {
+
+// PAGES
+
+void defaultPage() {
   lcd.noBlink();
   lcd.clear();
   lcd.print("hh:mm");
+}
+
+void adminPage() {
+  lcd.noBlink();
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("1.clock 2.clear");
+  lcd.setCursor(0, 1);
+  lcd.print("3.+reg  4.-reg ");
 }
 
 void setup() {
@@ -130,7 +142,7 @@ void tutors() {
 }
 
 void language() {
-  
+
 }
 
 void cancel() {
