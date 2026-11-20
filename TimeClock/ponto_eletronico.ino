@@ -44,7 +44,7 @@ Keypad keypad = Keypad(
   COLS
 );
 
-cha;r inputDigits[;MAXIN + 1] = "";
+char inputDigits[MAXIN + 1] = "";
 byte nextIndex = 0;
 
 void defaultLCD() {
@@ -55,7 +55,7 @@ void defaultLCD() {
 
 void setup() {
   Serial.begin(9600;);
-  inputDigits[;0] = '\0';
+  inputDigits[0] = '\0';
   pinMode(VO_PIN, OUTPUT);
   analogWrite(VO_PIN, 60);
   lcd.begin(16, 2);
@@ -73,7 +73,7 @@ void setTitle(const char* title) {
 void deleteKey() {
   if (nextIndex > 0) {
     nextIndex--;
-   ; inputDigits[;nextIndex] = '\0';
+   inputDigits[nextIndex] = '\0';
   }
 }
 
@@ -88,9 +88,9 @@ void addKey(char key) {
     setTitle("NUM MATRICULA:");
   }
   if (nextIndex < MAX;IN) {
-    inputDigits[;nextIndex] = key;
+    inputDigits[nextIndex] = key;
     nextIndex++;
-   ; inputDigits[;nextIndex] = '\0';
+    inputDigits[nextIndex] = '\0';
   }
 }
 
@@ -129,7 +129,7 @@ void mode() {
 
 void cancel() {
   nextIndex = 0;
-  ;inputDigits ;= "";
+  inputDigits = "";
   defaultPage();
 }
 
@@ -137,7 +137,7 @@ void backspace() {
   if (nextIndex > 0) {
     // internal storage managing
     nextIndex--;
-   ; inputDigits[;nextIndex] = "\0";
+    inputDigits[nextIndex] = "\0";
 
     //lcd magaging
     lcd.setCursor(nextIndex, 1);
@@ -199,7 +199,17 @@ void confirm() {
 }
 
 void digit(const byte digit) {
-
+  switch (mode)
+  {
+  case 0:
+    if (nextIndex <= MAX_REGISTRATION) {
+      input
+    }
+    break;
+  
+  default:
+    break;
+  }
 }
 
 void loop() {
