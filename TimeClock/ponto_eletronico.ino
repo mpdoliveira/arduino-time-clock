@@ -125,7 +125,13 @@ void mode() {
   }
 }
 
+void tutors() {
 
+}
+
+void language() {
+  
+}
 
 void cancel() {
   nextIndex = 0;
@@ -251,10 +257,10 @@ void loop() {
         mode();
         break;
       case 'B':
-        //functionless
+        tutors();
         break;
       case 'C':
-        //functionless
+        language();
         break;
       case 'D':
         cancel();
