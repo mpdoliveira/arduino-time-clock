@@ -2,7 +2,8 @@
 #include <Keypad.h>
 #include <LiquidCrystal.h>
 
-#define MAXIN 11
+#define MAX_PASSWORD 16
+#define MAX_REGISTRATION 10
 
 #define ROWS 4
 #define COLS 4
@@ -107,8 +108,30 @@ void printKey(char key) {
   lcd.print(key);
 }
 
-void mode() {
+// Mode managing
 
+// 0 : Operational
+// 1 : Admin auth
+// 2 : Admin
+
+byte mode = 0;
+
+void mode() {
+  switch (mode)
+  {
+  case 0:
+    mode = 1;
+    titlePage("ADMIN PASSWORD");
+    break;
+  case 1:
+    mode = 0;
+    defaultPage();
+  case 2:
+    mode = 0;
+    defaultPage();
+  default:
+    break;
+  }
 }
 
 void cancel() {
