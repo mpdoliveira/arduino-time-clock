@@ -52,13 +52,18 @@ LiquidCrystal lcd(
 );
 
 
-
 // PAGES
+
+byte activeTutors = 0;
 
 void defaultPage() {
   lcd.noBlink();
   lcd.clear();
-  lcd.print("hh:mm");
+  lcd.setCursor(0, 0);
+  lcd.print("hh:mm ");
+  lcd.setCursor(0, 1);
+  lcd.print("Tutoring: ");
+  lcd.print(activeTutors);
 }
 
 void titlePage(const char* title) {
@@ -144,18 +149,25 @@ void confirm() {
   {
   case 0: // operational
     if (checkRegistration()) {
+
       titlePage("SMILE");
       registerPhoto(); //TO DO
       delay(5000);
 
-      titlePage("GOOD TOTURING,");
-      lcd.print(inputDigits);
-      delay(3000);
+      if (checkActive()) {
+        activeTutors--;
+        titlePage("WELL DONE!");
+      }
+      else {
+        activeTutors++;
+        titlePage("GOOD TOTURING,");
+        lcd.print(inputDigits);
+      }
     }
     else {
       titlePage("NOT FOUND");
-      delay(3000)
     }
+    delay(3000); //3s to read text
 
     defaultPage();
     break;
@@ -231,6 +243,7 @@ void digit(const byte digit) {
   }
 }
 
+
 // SETUP
 
 void setup() {
@@ -243,6 +256,7 @@ void setup() {
   lcd.begin(16, 2);
   defaultPage();
 }
+
 
 // MAIN LOOP
 
@@ -279,7 +293,12 @@ void loop() {
         break;
     }
   }
-  else if (millis() - lastMillis < 120000) {
-    defaultPage();
+  else if (millis() - lastMillis > 120000) {
+    if (random(100) % 7 == 0) {
+      // TO DO scrt
+    }
+    else {
+      defaultPage();
+    }
   }
 }
